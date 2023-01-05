@@ -1,0 +1,42 @@
+repos:
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v2.39.1
+    hooks:
+      - id: commitizen
+      - id: commitizen-branch
+        stages: [push]
+  - hooks:
+      - id: check-byte-order-marker
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+    repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+  - hooks:
+      - description: Format files with rustfmt.
+        entry: bash -c 'cargo fmt -- --check'
+        files: \.rs$
+        id: cargo-fmt
+        language: rust
+        name: cargo fmt
+      - description: Check the package for errors.
+        entry: bash -c 'cargo check --all'
+        files: \.rs$
+        id: cargo-check
+        language: rust
+        name: cargo check
+        pass_filenames: false
+      - description: Lint rust sources
+        entry:
+          bash -c 'cargo clippy --all-targets --all-features --tests --benches --
+          -D warnings'
+        files: \.rs$
+        id: cargo-clippy
+        language: rust
+        name: cargo clippy
+        pass_filenames: false
+    repo: local
